@@ -23,13 +23,17 @@ GrowingDancer.prototype.step = function() {
   var color =
     Math.floor((this.radius - this.minRadius) /
       (this.maxRadius - this.minRadius) * 255);
-  this.$node.css('border-color', 'rgb(' + color + ', ' + 0 + ', ' + color +
-    ')');
+
+  this.$node.css(
+    'border-color',
+    'rgb(' + color + ', ' + 0 + ', ' + color + ')');
+
 
   if ((this.radius > this.maxRadius && this.direction > 0) ||
     (this.radius < this.minRadius && this.direction < 0)) {
     this.direction *= -1;
   }
+  
 };
 
 function makeGrowingDancer(top, left, timeBetweenSteps) {
