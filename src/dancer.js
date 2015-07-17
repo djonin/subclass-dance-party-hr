@@ -24,8 +24,8 @@ Dancer.prototype.setPosition = function(top, left) {
   };
   // this.top = top;
   // this.left = left;
-
-  this.$node.css(styleSettings);
+  if(this.$node)
+    this.$node.css(styleSettings);
 };
 
 Dancer.prototype.step = function() {

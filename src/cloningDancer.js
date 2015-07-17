@@ -25,10 +25,10 @@ CloningDancer.prototype.step = function() {
   if (this.timeToLive > 0) {
     Dancer.prototype.step.call(this);
   } else {
+    dancers.splice(dancers.indexOf(this), 1);
     this.$node.remove();
     this.$node = null;
-    dancers.splice(dancers.indexOf(this), 1);
-    return ;
+    return;
   }
 
   this.top = Number.parseInt(this.$node.css('top'));
