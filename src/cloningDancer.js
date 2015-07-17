@@ -1,4 +1,5 @@
-function CloningDancer(top, left, timeBetweenSteps, timeToLive, prob, red, radius) {
+function CloningDancer(top, left, timeBetweenSteps, timeToLive, prob, red,
+  radius) {
   this.timeToLive = timeToLive;
   this.prob = prob;
   this.top = top;
@@ -6,12 +7,13 @@ function CloningDancer(top, left, timeBetweenSteps, timeToLive, prob, red, radiu
   this.red = red;
   this.radius = radius;
   Dancer.call(this, top, left, timeBetweenSteps);
-  if(this.$node){
+  if (this.$node) {
     this.$node.css('border-width', this.radius);
     this.$node.css('border-radius', this.radius);
-    this.$node.css('border-color', 'rgb(' + red + ', ' + (255-red) + ', ' + (255-red) +
+    this.$node.css('border-color', 'rgb(' + red + ', ' + (255 - red) + ', ' + (
+        255 - red) +
       ')');
-  } 
+  }
 }
 
 CloningDancer.prototype = Object.create(Dancer.prototype);
@@ -19,31 +21,38 @@ CloningDancer.prototype = Object.create(Dancer.prototype);
 CloningDancer.prototype.constructor = CloningDancer;
 
 CloningDancer.prototype.step = function() {
-
-  var direction = Math.random() > 0.5 ? 1 : -1;
-  var newTop = (this.top + Math.random() * 10 + this.radius)*direction;
-  var newLeft = (this.left + Math.random() * 10+ this.radius)*direction;
-
-  //clone instead of moving with probability prob
-  if(Math.random()* 100 < this.prob) {
-    //clone the node
-    var newRadius = this.radius - Math.ceil(this.radius/10)
-    var newTime = Math.ceil(this.timeBetweenSteps/2);
-    var clone = new CloningDancer(newTop, newLeft, newTime, Math.floor(this.timeToLive/2), this.prob, Math.floor(this.red-(this.red/4)), newRadius);
-    
-    this.$node.parent().append(clone.$node);
-  } else {
-    //move
-    this.setPosition(this.top+direction, this.left+direction);
-  }
-
   this.timeToLive--;
-  if(this.timeToLive > 0 ) {
+  if (this.timeToLive > 0) {
     Dancer.prototype.step.call(this);
   } else {
     this.$node.remove();
     this.$node = null;
+    dancers.splice(dancers.indexOf(this), 1);
+    return ;
   }
+
+  this.top = Number.parseInt(this.$node.css('top'));
+  this.left = Number.parseInt(this.$node.css('left'));
+
+  var direction = Math.random() > 0.5 ? 1 : -1;
+  var newTop = this.top + (Math.random() * 10 + this.radius) * direction;
+  var newLeft = this.left + (Math.random() * 10 + this.radius) * direction;
+
+  //clone instead of moving with probability prob
+  if (Math.random() * 100 < this.prob) {
+    //clone the node
+    var newRadius = this.radius - Math.ceil(this.radius / 10)
+    var newTime = Math.ceil(this.timeBetweenSteps / 2);
+    var clone = new CloningDancer(newTop, newLeft, newTime, Math.floor(this.timeToLive /
+      2), this.prob, Math.floor(this.red - (this.red / 4)), newRadius);
+    dancers.push(clone);
+
+    this.$node.parent().append(clone.$node);
+  } else {
+    //move
+    this.setPosition(this.top + direction, this.left + direction);
+  }
+
 
 };
 
