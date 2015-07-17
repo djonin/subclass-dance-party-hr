@@ -7,6 +7,12 @@ function Dancer(top, left, timeBetweenSteps) {
 
   this.step();
 }
+Dancer.prototype.lineUp = function () {
+    this.setPosition(
+        $(window).height() * Math.random(),
+        100
+    );
+};
 
 Dancer.prototype.setPosition = function(top, left) {
   // Use css top and left properties to position our <span> tag
